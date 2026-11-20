@@ -1,19 +1,47 @@
 <script setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
-const todos = [
-  'buy milk',
-  'go to gym',
-  'study javascript'
-]
+// const todos = [
+//   'buy milk',
+//   'go to gym',
+//   'study javascript'
+// ]
+// const todos = reactive([
+//   'buy milk',
+//   'go to gym',
+//   'study javascript'
+// ]) 
+const todos = reactive([
+  {
+    id: crypto.randomUUID(),
+    title: 'Item 0'
+  },
+  {
+    id: crypto.randomUUID(),
+    title: 'Item 1'
+  },
+  {
+    id: crypto.randomUUID(),
+    title: 'Item 2'
+  }
+]) 
+
 const newTodo = ref('newTodo');
 
 function addTodo(e) {
   // Note: リロードしないように
+  // e.preventDefault();
+  // alert(newTodo.value);
   e.preventDefault();
-  alert(newTodo.value);
+  todos.push(
+    {
+      id: crypto.randomUUID(),
+      title: newTodo.value
+    }
+  );
+  newTodo.value = '';
 }
 
 function handleInput(e) {
@@ -25,7 +53,7 @@ function handleInput(e) {
   <div class="container">
     <h1>Todos</h1>
     <ul>
-      <li v-for="todo in todos">{{ todo }}</li>
+      <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
     </ul>
     <form @submit="addTodo">
       <!-- <input type="text" :value="newTodo" @input="handleInput"> -->
