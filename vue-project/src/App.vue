@@ -6,11 +6,12 @@ const todos = [
   'go to gym',
   'study javascript'
 ]
+const newTodo = 'newTodo';
 
 function addTodo(e) {
   // Note: リロードしないように
   e.preventDefault();
-  alert('ok!');
+  alert(newTodo);
 }
 </script>
 
@@ -21,7 +22,7 @@ function addTodo(e) {
       <li v-for="todo in todos">{{ todo }}</li>
     </ul>
     <form @submit="addTodo">
-      <input type="text">
+      <input type="text" :value="newTodo">
       <button>Add</button>
     </form>
   </div>
