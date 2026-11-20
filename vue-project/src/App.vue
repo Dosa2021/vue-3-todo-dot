@@ -1,4 +1,6 @@
 <script setup>
+import { ref } from 'vue';
+
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
 const todos = [
@@ -6,12 +8,16 @@ const todos = [
   'go to gym',
   'study javascript'
 ]
-const newTodo = 'newTodo';
+const newTodo = ref('newTodo');
 
 function addTodo(e) {
   // Note: リロードしないように
   e.preventDefault();
-  alert(newTodo);
+  alert(newTodo.value);
+}
+
+function handleInput(e) {
+  newTodo.value = e.target.value;
 }
 </script>
 
@@ -22,7 +28,7 @@ function addTodo(e) {
       <li v-for="todo in todos">{{ todo }}</li>
     </ul>
     <form @submit="addTodo">
-      <input type="text" :value="newTodo">
+      <input type="text" :value="newTodo" @input="handleInput">
       <button>Add</button>
     </form>
   </div>
