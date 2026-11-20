@@ -35,6 +35,10 @@ function addTodo(e) {
   // e.preventDefault();
   // alert(newTodo.value);
   e.preventDefault();
+  if (newTodo.value.trim() === '') {
+    return
+  }
+
   todos.push(
     {
       id: crypto.randomUUID(),
