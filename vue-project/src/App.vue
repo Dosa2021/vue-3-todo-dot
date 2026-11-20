@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref } from 'vue';
+import TodoList from './components/TodoList.vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
@@ -56,9 +57,11 @@ function handleInput(e) {
 <template>
   <div class="container">
     <h1>Todos</h1>
-    <ul>
+    <!-- <ul>
       <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
-    </ul>
+    </ul> -->
+    <TodoList :todos="todos"/>
+
     <form @submit="addTodo">
       <!-- <input type="text" :value="newTodo" @input="handleInput"> -->
       <input type="text" v-model="newTodo">
