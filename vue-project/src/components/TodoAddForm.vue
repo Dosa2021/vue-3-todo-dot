@@ -4,8 +4,13 @@ import { ref } from 'vue';
 const emit = defineEmits(['addTodoEvent']);
 const newTodo = ref('');
 
-function handleSubmit() {
+function handleSubmit(e) {
+    e.preventDefault();
+    if (newTodo.value.trim() === '') {
+        return;
+    }
     emit('addTodoEvent', newTodo.value);
+    newTodo.value = '';
 }
 </script>
 

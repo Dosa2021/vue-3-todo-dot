@@ -5,28 +5,21 @@ import TodoAddForm from './components/TodoAddForm.vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
-// const todos = [
-//   'buy milk',
-//   'go to gym',
-//   'study javascript'
-// ]
-// const todos = reactive([
-//   'buy milk',
-//   'go to gym',
-//   'study javascript'
-// ]) 
 const todos = reactive([
   {
     id: crypto.randomUUID(),
-    title: 'Item 0'
+    title: 'Item 0',
+    isCompleted: false
   },
   {
     id: crypto.randomUUID(),
-    title: 'Item 1'
+    title: 'Item 1',
+    isCompleted: true
   },
   {
     id: crypto.randomUUID(),
-    title: 'Item 2'
+    title: 'Item 2',
+    isCompleted: false
   }
 ]) 
 
@@ -51,7 +44,19 @@ const newTodo = ref('newTodo');
 // }
 
 function addTodo(newTodo) {
-  alert(newTodo);
+  todos.push({
+    id: crypto.randomUUID(),
+    title: newTodo,
+    isCompleted: false
+  })
+}
+
+function toggleIsCompleted(todo) {
+    const index = todos.findIndex((element) => {
+      return element.id === todo.id;
+
+    })
+    todos[index].isCompleted = !todos[index].isCompleted;
 }
 
 function handleInput(e) {
@@ -65,7 +70,7 @@ function handleInput(e) {
     <!-- <ul>
       <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
     </ul> -->
-    <TodoList :todos="todos"/>
+    <TodoList :todos="todos" @checkTodoEvent="toggleIsCompleted"/>
 
     <!-- <form @submit="addTodo">
       <input type="text" v-model="newTodo">
