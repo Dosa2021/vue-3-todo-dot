@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue';
 import TodoList from './components/TodoList.vue';
+import TodoAddForm from './components/TodoAddForm.vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
@@ -31,22 +32,26 @@ const todos = reactive([
 
 const newTodo = ref('newTodo');
 
-function addTodo(e) {
-  // Note: リロードしないように
-  // e.preventDefault();
-  // alert(newTodo.value);
-  e.preventDefault();
-  if (newTodo.value.trim() === '') {
-    return
-  }
+// function addTodo(e) {
+//   // Note: リロードしないように
+//   // e.preventDefault();
+//   // alert(newTodo.value);
+//   e.preventDefault();
+//   if (newTodo.value.trim() === '') {
+//     return
+//   }
 
-  todos.push(
-    {
-      id: crypto.randomUUID(),
-      title: newTodo.value
-    }
-  );
-  newTodo.value = '';
+//   todos.push(
+//     {
+//       id: crypto.randomUUID(),
+//       title: newTodo.value
+//     }
+//   );
+//   newTodo.value = '';
+// }
+
+function addTodo(newTodo) {
+  alert(newTodo);
 }
 
 function handleInput(e) {
@@ -62,12 +67,11 @@ function handleInput(e) {
     </ul> -->
     <TodoList :todos="todos"/>
 
-    <form @submit="addTodo">
-      <!-- <input type="text" :value="newTodo" @input="handleInput"> -->
+    <!-- <form @submit="addTodo">
       <input type="text" v-model="newTodo">
-      
       <button>Add</button>
-    </form>
+    </form> -->
+    <TodoAddForm @addTodoEvent="addTodo" />
   </div>
 
   <div class="img-mei">
