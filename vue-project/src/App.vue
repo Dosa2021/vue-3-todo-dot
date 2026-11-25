@@ -1,28 +1,28 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import TodoList from './components/TodoList.vue';
 import TodoAddForm from './components/TodoAddForm.vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
-const todos = reactive([
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 0',
-    isCompleted: false
-  },
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 1',
-    isCompleted: true
-  },
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 2',
-    isCompleted: false
-  }
-]) 
-
+// const todos = reactive([
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 0',
+//     isCompleted: false
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 1',
+//     isCompleted: true
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 2',
+//     isCompleted: false
+//   }
+// ]) 
+const todos = reactive([]);
 const newTodo = ref('newTodo');
 
 // function addTodo(e) {
@@ -61,23 +61,34 @@ function toggleIsCompleted(todo) {
 function deleteTodo(todo) {
   if (confirm('Sure?') === false) {
     return;
-
   }
-  console.log('deleteTodo-------------')
 
   const index = todos.findIndex((element) => {
     return element.id === todo.id;
   })
   todos.splice(index, 1)
-
-
-
-
 }
 
 function handleInput(e) {
   newTodo.value = e.target.value;
 }
+
+onMounted(() => {
+  const savedTodos = localStorage.getItem('todos');
+  if (savedTodos !== null) {
+    const pasedTodos = JSON.parse(savedTodos);
+    pasedTodos.forEach(element => {
+      todos.push(element)
+    });
+  }
+});
+
+watch(
+  todos,
+  (updatedTodos) => {
+    localStorage.setItem('todos', JSON.stringify(updatedTodos))
+  }
+)
 </script>
 
 <template>

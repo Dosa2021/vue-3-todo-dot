@@ -10,6 +10,8 @@ npm run dev
     ・v-model
     ・key属性
     ・emit
+    ・onMounted（ライフサイクル）
+    ・watch
 
 
 【参考まで】
