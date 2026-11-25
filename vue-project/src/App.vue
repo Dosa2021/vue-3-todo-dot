@@ -1,70 +1,113 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
+import TodoList from './components/TodoList.vue';
+import TodoAddForm from './components/TodoAddForm.vue';
 
 // Note: 画像はどこに配置するのが適切か？
 const imgUrl = '/mei-miteki.webp';
-// const todos = [
-//   'buy milk',
-//   'go to gym',
-//   'study javascript'
-// ]
 // const todos = reactive([
-//   'buy milk',
-//   'go to gym',
-//   'study javascript'
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 0',
+//     isCompleted: false
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 1',
+//     isCompleted: true
+//   },
+//   {
+//     id: crypto.randomUUID(),
+//     title: 'Item 2',
+//     isCompleted: false
+//   }
 // ]) 
-const todos = reactive([
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 0'
-  },
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 1'
-  },
-  {
-    id: crypto.randomUUID(),
-    title: 'Item 2'
-  }
-]) 
-
+const todos = reactive([]);
 const newTodo = ref('newTodo');
 
-function addTodo(e) {
-  // Note: リロードしないように
-  // e.preventDefault();
-  // alert(newTodo.value);
-  e.preventDefault();
-  if (newTodo.value.trim() === '') {
-    return
+// function addTodo(e) {
+//   // Note: リロードしないように
+//   // e.preventDefault();
+//   // alert(newTodo.value);
+//   e.preventDefault();
+//   if (newTodo.value.trim() === '') {
+//     return
+//   }
+
+//   todos.push(
+//     {
+//       id: crypto.randomUUID(),
+//       title: newTodo.value
+//     }
+//   );
+//   newTodo.value = '';
+// }
+
+function addTodo(newTodo) {
+  todos.push({
+    id: crypto.randomUUID(),
+    title: newTodo,
+    isCompleted: false
+  })
+}
+
+function toggleIsCompleted(todo) {
+    const index = todos.findIndex((element) => {
+      return element.id === todo.id;
+    })
+    todos[index].isCompleted = !todos[index].isCompleted;
+}
+
+function deleteTodo(todo) {
+  if (confirm('Sure?') === false) {
+    return;
   }
 
-  todos.push(
-    {
-      id: crypto.randomUUID(),
-      title: newTodo.value
-    }
-  );
-  newTodo.value = '';
+  const index = todos.findIndex((element) => {
+    return element.id === todo.id;
+  })
+  todos.splice(index, 1)
 }
 
 function handleInput(e) {
   newTodo.value = e.target.value;
 }
+
+onMounted(() => {
+  const savedTodos = localStorage.getItem('todos');
+  if (savedTodos !== null) {
+    const pasedTodos = JSON.parse(savedTodos);
+    pasedTodos.forEach(element => {
+      todos.push(element)
+    });
+  }
+});
+
+watch(
+  todos,
+  (updatedTodos) => {
+    localStorage.setItem('todos', JSON.stringify(updatedTodos))
+  }
+)
 </script>
 
 <template>
   <div class="container">
     <h1>Todos</h1>
-    <ul>
+    <!-- <ul>
       <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
-    </ul>
-    <form @submit="addTodo">
-      <!-- <input type="text" :value="newTodo" @input="handleInput"> -->
+    </ul> -->
+    <TodoList 
+      :todos="todos" 
+      @checkTodoEvent="toggleIsCompleted"
+      @deleteTodoEvent="deleteTodo"
+    />
+
+    <!-- <form @submit="addTodo">
       <input type="text" v-model="newTodo">
-      
       <button>Add</button>
-    </form>
+    </form> -->
+    <TodoAddForm @addTodoEvent="addTodo" />
   </div>
 
   <div class="img-mei">

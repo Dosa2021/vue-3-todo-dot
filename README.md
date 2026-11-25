@@ -9,6 +9,9 @@ npm run dev
 ・Vue.js 3入門 Todo管理アプリ作成
     ・v-model
     ・key属性
+    ・emit
+    ・onMounted（ライフサイクル）
+    ・watch
 
 
 【参考まで】
