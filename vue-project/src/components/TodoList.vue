@@ -3,11 +3,18 @@
 const props = defineProps({
     todos: Array
 })
-const emit = defineEmits(['checkTodoEvent']);
+const emit = defineEmits([
+    'checkTodoEvent',
+    'deleteTodoEvent'
+]);
 
 function handleCheck(todo) {
     // console.log(todo.isCompleted);
     emit('checkTodoEvent', todo);
+}
+
+function handleClick(todo) {
+   emit('deleteTodoEvent', todo); 
 }
 
 </script>
@@ -23,6 +30,7 @@ function handleCheck(todo) {
                 >
                 {{ todo.title }}
             </label>
+            <button @click="handleClick(todo)">Delete</button>
         </li>
     </ul>
 </template>
@@ -36,5 +44,15 @@ function handleCheck(todo) {
     label:has(:checked) {
         color: #ddd;
         text-decoration: line-through;
+    }
+    li + li {
+        margin-top: 4px;
+    }
+    li {
+        display: flex;
+        gap: 8px;
+    }
+    button {
+        margin-left: auto;
     }
 </style>

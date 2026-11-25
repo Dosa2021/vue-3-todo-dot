@@ -54,9 +54,25 @@ function addTodo(newTodo) {
 function toggleIsCompleted(todo) {
     const index = todos.findIndex((element) => {
       return element.id === todo.id;
-
     })
     todos[index].isCompleted = !todos[index].isCompleted;
+}
+
+function deleteTodo(todo) {
+  if (confirm('Sure?') === false) {
+    return;
+
+  }
+  console.log('deleteTodo-------------')
+
+  const index = todos.findIndex((element) => {
+    return element.id === todo.id;
+  })
+  todos.splice(index, 1)
+
+
+
+
 }
 
 function handleInput(e) {
@@ -70,7 +86,11 @@ function handleInput(e) {
     <!-- <ul>
       <li v-for="todo in todos" :key="todo.id">{{ todo.title }}</li>
     </ul> -->
-    <TodoList :todos="todos" @checkTodoEvent="toggleIsCompleted"/>
+    <TodoList 
+      :todos="todos" 
+      @checkTodoEvent="toggleIsCompleted"
+      @deleteTodoEvent="deleteTodo"
+    />
 
     <!-- <form @submit="addTodo">
       <input type="text" v-model="newTodo">
